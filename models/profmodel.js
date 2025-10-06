@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema( // format ou schéma d'un utilisateur de notre app
+const profSchema = new mongoose.Schema( // format ou schéma d'un utilisateur de notre app
   {
-    username: {
+    name: {
       type: String,
       required: true,
       trim: true, // permet de supprimer les espaces avant ou aprés le username du client
@@ -27,5 +27,5 @@ const userSchema = new mongoose.Schema( // format ou schéma d'un utilisateur de
   { timestamps: true } // ajoute createdAt et updatedAt automatiquement
 );
 
-const User= mongoose.model("User", userSchema); //mongoose.model("modelName", Schema)
-export default User
+const Prof= mongoose.model("Prof", profSchema); //mongoose.model("modelName", Schema)
+export default Prof;

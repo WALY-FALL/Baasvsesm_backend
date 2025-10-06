@@ -1,14 +1,26 @@
 
 import express from "express";
-import {createClass, getClasses} from "../controller/classcontroller.js";
+import {createClass, getClasseById, getMyClasses, updateClass, deleteClass} from "../controller/classcontroller.js";
+import { protect } from "../middlewares/authMiddleware.js";
 
 
 const router = express.Router();//creation de l'objet router
 
-// Route POST pour créer une classe
-router.post("/create", createClass); //Quand une requéte post (Create) arrive /api, exécute la fonction signup qui créera l'utilisateur
 
-// Route pour lister toutes les classes
-router.get("/all", getClasses);
+// Route pour créer une classe (protégée par auth)
+router.post("/create", protect, createClass);
+
+router.get("/classe/:id", getClasseById);
+
+// Route pour récupérer MES classes (protégée aussi)
+router.get("/my-classes", protect, getMyClasses);
+
+router.get("/:id", protect, getClasseById);          // Voir une classe par son ID
+
+// Modifier une classe (protégé)
+router.put("/update/:id", protect, updateClass);
+
+// Supprimer une classe (protégé)
+router.delete("/delete/:id", protect, deleteClass);
 
 export default router;

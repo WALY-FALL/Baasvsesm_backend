@@ -2,10 +2,12 @@ import "dotenv/config";   // Bibliotéque de node.js. Permet de charger les vari
 import express from "express"; // framework de node.js. Sert uniquement á gérer les routes http comm app.get, app.post ...
 import cors from "cors";  // Middleware permet d'activer le CROSS-ORIGIN RESOURCE SHARING
 import morgan from "morgan";//Middlewae du protocole http. permet de loguer dans le cosole toutes les requètes http
-import signupRoutes from "./routes/signuproutes.js"; //Objet routeur express, crèer avec express.Router().
-import loginRoutes from "./routes/loginroutes.js";
-import userRoutes from "./routes/signuproutes.js";
+import signupProfRoutes from "./routes/signupprofroutes.js"; //Objet routeur express, crèer avec express.Router().
+import signupeleveRoutes from "./routes/signupeleveroutes.js";
+import loginProfRoutes from "./routes/loginprofroutes.js";
+import logineleveRoutes from "./routes/logineleveroutes.js";
 import classRoutes from "./routes/classroutes.js";
+import coursRoutes from "./routes/coursroutes.js";
 
 import connectDB from "./config/db.js"; 
 
@@ -21,15 +23,24 @@ app.use(cors());
 app.use(morgan("dev"));
 
 //Les routes
-app.use("/api/signup", signupRoutes); // pour toutes les requetes qui commencent par /api/signup utiliser signupRoutes. Permet à app d'utiliser lobjet router d'express avec la route /api/signup
-app.use("/api/login", loginRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/signupprof", signupProfRoutes); // pour toutes les requetes qui commencent par /api/signup utiliser signupRoutes. Permet à app d'utiliser lobjet router d'express avec la route /api/signup
+app.use("/api/signupeleve", signupeleveRoutes);
+app.use("/api/loginprof", loginProfRoutes);
+app.use("/api/logineleve", logineleveRoutes);
+//app.use("/api/profs", profsRoutes);
 app.use("/api/classe", classRoutes);
+app.use("/api/cours", coursRoutes);
+// ⚡ Permet d'accéder aux fichiers uploadés
+app.use("/uploads", express.static("uploads"));
 
 // Tester les routes
 /*app.get("/", (req, res) => {
   res.send("🚀 API running with ESM!");
 });*/
+
+
+
+
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 5000;

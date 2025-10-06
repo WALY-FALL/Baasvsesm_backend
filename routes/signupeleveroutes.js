@@ -1,18 +1,18 @@
-import User from "../models/usermodel.js";
+import Eleve from "../models/elevemodel.js";
 import express from "express";
-import { signup } from "../controller/signupcontroller.js";
+import { signup } from "../controller/signupelevecontroller.js";
 
 const router = express.Router();//creation de l'objet router
 
-// Route POST pour créer un utilisateur
+// Route POST pour ajouter un eleve
 router.post("/", signup); //Quant une requéte post (Create) arrive /api/signup, exécute la fonction signup qui créera l'utilisateur
 
 
-// Route GET pour récupérer tous les utilisateurs
-router.get("/", async (req, res) => {
+// Route GET pour récupérer tous les élèves d'une classe
+router.get("/Prof/:profId", async (req, res) => {
     try {
-      const users = await User.find(); // récupère tous les documents
-      res.json(users);
+      const eleve = await Eleve.find({ profId: req.params.profId }); // récupère tous les documents
+      res.json(eleve);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -22,9 +22,9 @@ router.get("/", async (req, res) => {
   // DELETE un utilisateur par ID
 router.delete("/:id", async (req, res) => {
     try {
-      const user = await User.findByIdAndDelete(req.params.id);
+      const eleve = await Eleve.findByIdAndDelete(req.params.id);
   
-      if (!user) {
+      if (!eleve) {
         return res.status(404).json({ message: "Utilisateur non trouvé" });
       }
   
