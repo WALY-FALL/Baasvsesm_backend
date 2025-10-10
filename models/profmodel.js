@@ -2,7 +2,12 @@ import mongoose from "mongoose";
 
 const profSchema = new mongoose.Schema( // format ou schéma d'un utilisateur de notre app
   {
-    name: {
+    nom: {
+      type: String,
+      required: true,
+      trim: true, // permet de supprimer les espaces avant ou aprés le username du client
+    },
+    prenom: {
       type: String,
       required: true,
       trim: true, // permet de supprimer les espaces avant ou aprés le username du client

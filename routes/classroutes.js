@@ -2,15 +2,25 @@
 import express from "express";
 import {createClass, getClasseById, getMyClasses, updateClass, deleteClass} from "../controller/classcontroller.js";
 import { protect } from "../middlewares/authMiddleware.js";
+import Classe from "../models/classmodel.js";
 
 
 const router = express.Router();//creation de l'objet router
 
-
+// backend/routes/classeRoutes.js
+router.get("/prof/:profId", async (req, res) => {
+    try {
+      const classes = await Classe.find({ profId: req.params.profId });
+      res.json(classes);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
 // Route pour créer une classe (protégée par auth)
 router.post("/create", protect, createClass);
 
-router.get("/classe/:id", getClasseById);
+//router.get("/classe/:id", getClasseById);
 
 // Route pour récupérer MES classes (protégée aussi)
 router.get("/my-classes", protect, getMyClasses);

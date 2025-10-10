@@ -2,7 +2,12 @@ import mongoose from "mongoose";
 
 const eleveSchema = new mongoose.Schema( // format ou schéma d'un utilisateur de notre app
   {
-    name: {
+    nom: {
+      type: String,
+      required: true,
+      trim: true, // permet de supprimer les espaces avant ou aprés le username du client
+    },
+    prenom: {
       type: String,
       required: true,
       trim: true, // permet de supprimer les espaces avant ou aprés le username du client
@@ -17,11 +22,6 @@ const eleveSchema = new mongoose.Schema( // format ou schéma d'un utilisateur d
       type: String,
       required: true,
       minlength: 6,
-    },
-    profId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Prof", // ← correspond exactement au nom du modèle Prof ci-dessus
-      required: true,
     },
   },
   { timestamps: true } // ajoute createdAt et updatedAt automatiquement

@@ -1,11 +1,11 @@
 import Prof from "../models/profmodel.js";
 import express from "express";
-import { signup } from "../controller/signupprofcontroller.js";
+import { signup, login } from "../controller/profController.js";
 
 const router = express.Router();//creation de l'objet router
 
 // Route POST pour créer un utilisateur
-router.post("/", signup); //Quant une requéte post (Create) arrive /api/signup, exécute la fonction signup qui créera l'utilisateur
+router.post("/signup", signup); //Quant une requéte post (Create) arrive /api/signup, exécute la fonction signup qui créera l'utilisateur
 
 
 // Route GET pour récupérer tous les profs
@@ -31,6 +31,25 @@ router.delete("/:id", async (req, res) => {
       res.json({ message: "Utilisateur supprimé avec succès", prof });
     } catch (err) {
       res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Route POST pour se connecter
+router.post("/login", login);
+
+
+// ✅ Route GET : récupérer tous les profs disponibles
+router.get("/", async (req, res) => {
+    try {
+      const profs = await Prof.find().select("-password"); // on exclut le mot de passe
+      res.status(200).json({
+        success: true,
+        message: "Liste des profs récupérée avec succès",
+        data: profs,
+      });
+    } catch (err) {
+      console.error("Erreur lors de la récupération des profs :", err);
+      res.status(500).json({ success: false, message: "Erreur serveur" });
     }
   });
 

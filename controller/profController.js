@@ -12,7 +12,7 @@ const generateToken = (profId) => {
 //Fonction signup qui crée les utilisateurs dans la base de donnee
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, matiere } = req.body;
+    const { nom, prenom, email, password, matiere } = req.body;
 
     // Vérifier si l'utilisateur existe déjà
     const existingProf = await Prof.findOne({ email });
@@ -26,7 +26,8 @@ export const signup = async (req, res) => {
 
     // Créer l'utilisateur
     const newProf = await Prof.create({
-      name,
+      nom,
+      prenom,
       email,
       password: hashedPassword,
       matiere
@@ -37,7 +38,8 @@ export const signup = async (req, res) => {
       message: "User created",
       prof: {
         id: newProf._id,
-        name: newProf.name,
+        nom: newProf.nom,
+        prenom: newProf.prenom,
         email: newProf.email
       },
       token: generateToken(newProf._id),
@@ -49,3 +51,43 @@ export const signup = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+//Login Prof
+
+export const login = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+     
+  
+      // Vérifier si l'utilisateur existe
+     const prof = await Prof.findOne({ email });
+      if (!prof) {
+        return res.status(400).json({ success: false, message: "Invalid credentials" });
+      }
+  
+      // Vérifier le mot de passe
+      const isMatch = await bcrypt.compare(password, prof.password);
+      if (!isMatch) {
+        return res.status(402).json({ success: false, message: "Invalid credentials" });
+      }
+  
+      // Créer un token JWT
+      const token = jwt.sign({ profId: prof._id }, process.env.JWT_SECRET, { expiresIn: "24h" });
+     
+      res.status(200).json({
+        success: true,
+        prof: {
+          id: prof._id,
+          email: prof.email
+          
+        },
+        token,
+      });
+      
+         
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  };
+  
