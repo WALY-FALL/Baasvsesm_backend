@@ -6,7 +6,8 @@ import profRoutes from "./routes/profRoutes.js"; //Objet routeur express, crèer
 import eleveRoutes from "./routes/eleveRoutes.js";
 //import loginProfRoutes from "./routes/loginprofroutes.js";
 import classRoutes from "./routes/classroutes.js";
-//import coursRoutes from "./routes/coursroutes.js";
+import coursRoutes from "./routes/coursRoutes.js";
+
 
 
 import connectDB from "./config/db.js"; 
@@ -25,12 +26,14 @@ app.use(morgan("dev"));
 //Les routes
 //app.use("/api/prof", signupProfRoutes); // pour toutes les requetes qui commencent par /api/signup utiliser signupRoutes. Permet à app d'utiliser lobjet router d'express avec la route /api/signup
 app.use("/api/eleves", eleveRoutes);
-app.use("/api/prof", profRoutes);
+app.use("/api/profs", profRoutes);
 app.use("/api/classes", classRoutes);
-//app.use("/api/cours", coursRoutes);
+app.use("/api/cours", coursRoutes);
+
 // ⚡ Permet d'accéder aux fichiers uploadés
 app.use("/uploads", express.static("uploads"));
 //app.use("/api/eleves", eleveRoutes);
+
 
 
 // Tester les routes

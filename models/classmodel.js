@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-const classSchema = new mongoose.Schema( // format ou schéma d'un utilisateur de notre app
+const classSchema = new mongoose.Schema(
   {
     serie: {
       type: String,
       required: false,
-      trim: true, // permet de supprimer les espaces avant ou aprés le username du client
+      trim: true, // supprime les espaces inutiles
     },
     niveau: {
       type: String,
@@ -17,16 +17,14 @@ const classSchema = new mongoose.Schema( // format ou schéma d'un utilisateur d
       required: false,
       trim: true,
     },
-
     profId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Prof", // ← correspond exactement au nom du modèle Prof ci-dessus
-      required: true,
+      ref: "Prof", // référence vers le modèle Prof
+      required: true, // chaque classe appartient à un prof
     },
-
   },
-  { timestamps: true } // ajoute createdAt et updatedAt automatiquement
+  { timestamps: true }
 );
 
-const Classe= mongoose.model("Classe", classSchema); //mongoose.model("modelName", Schema)
+const Classe = mongoose.model("Classe", classSchema);
 export default Classe;

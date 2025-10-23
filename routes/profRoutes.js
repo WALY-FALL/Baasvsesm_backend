@@ -8,15 +8,26 @@ const router = express.Router();//creation de l'objet router
 router.post("/signup", signup); //Quant une requéte post (Create) arrive /api/signup, exécute la fonction signup qui créera l'utilisateur
 
 
-// Route GET pour récupérer tous les profs
+  // ✅ Route GET : liste de tous les profs
 router.get("/", async (req, res) => {
-    try {
-      const profs = await Prof.find(); // récupère tous les documents
-      res.json(profs);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
+  try {
+    const profs = await Prof.find().select("-password"); // on cache le mot de passe
+
+    res.status(200).json({
+      success: true,
+      message: "Liste des professeurs récupérée avec succès",
+      profs,
+    });
+    
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Erreur lors de la récupération des professeurs",
+      error: err.message,
+    });
+  }
+});
+
 
 
   // DELETE un utilisateur par ID

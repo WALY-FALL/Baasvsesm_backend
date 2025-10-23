@@ -30,3 +30,31 @@ export const protect = async (req, res, next) => {
     return res.status(401).json({ message: "Pas de token, accès refusé" });
   }
 };
+
+// middlewares/auth.js (existant) -> doit remplir req.user
+// middleware pour vérifier rôle prof
+export function requireProf(req, res, next) 
+{
+  if (!req.user) return res.status(401).json({ message: "Non authentifié" });
+  
+  if (req.user.role !== "prof") return res.status(403).json({ message: "Accès réservé aux professeurs" });
+  next();
+}
+
+export const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Token manquant" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.prof = decoded; // contient l'id du prof et éventuellement son email
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Token invalide" });
+  }
+};

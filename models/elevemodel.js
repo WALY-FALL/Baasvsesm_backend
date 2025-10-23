@@ -1,31 +1,50 @@
 import mongoose from "mongoose";
 
-const eleveSchema = new mongoose.Schema( // format ou schéma d'un utilisateur de notre app
+const eleveSchema = new mongoose.Schema(
   {
     nom: {
       type: String,
       required: true,
-      trim: true, // permet de supprimer les espaces avant ou aprés le username du client
+      trim: true,
     },
     prenom: {
       type: String,
       required: true,
-      trim: true, // permet de supprimer les espaces avant ou aprés le username du client
+      trim: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true, // chaque client doit avoir un unique email
-      lowercase: true, //met tout en miniscule même si le client ecrit en majuscule
+      unique: true,
+      lowercase: true,
     },
     password: {
       type: String,
-      required: true,
-      minlength: 6,
+      required: false, // optionnel si tu ne fais pas encore de hashage
+      //minlength: 6,
+    },
+    profId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Prof",
+      default: null, // au début il n’a pas encore choisi de prof
+    },
+    classeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Classe",
+      default: null, // idem pour la classe
     },
   },
-  { timestamps: true } // ajoute createdAt et updatedAt automatiquement
+  { timestamps: true }
 );
 
-const Eleve= mongoose.model("Eleve", eleveSchema); //mongoose.model("modelName", Schema)
+// Optionnel : retirer le mot de passe des réponses JSON
+eleveSchema.set("toJSON", {
+  transform: (doc, ret) => {
+    delete ret.password;
+    return ret;
+  },
+});
+
+const Eleve = mongoose.model("Eleve", eleveSchema);
 export default Eleve;
+
