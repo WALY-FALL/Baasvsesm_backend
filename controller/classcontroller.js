@@ -1,6 +1,7 @@
 //Fonction pour créer une classe dans la base de donnee mongooose
 import Classe from "../models/classmodel.js";
 
+
 // Créer une classe liée au prof connecté
 export const createClass = async (req, res) => {
   try {

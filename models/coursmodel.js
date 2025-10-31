@@ -20,7 +20,7 @@ const coursSchema = new mongoose.Schema({
   },
   profId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Professeur",
+    ref: "Prof",
     required: true,
   },
   classeId: {
